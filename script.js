@@ -4,7 +4,7 @@ const taskInput = document.getElementById('taskInput');
 
 // Função para buscar e exibir a lista de tarefas
 async function fetchTasks() {
-    const response = await fetch('http://localhost:3000/users'); // Altere para incluir a porta
+    const response = await fetch('http://localhost:3000/tasks'); // Altere para incluir a porta
     const tasks = await response.json();
     taskList.innerHTML = '';
     tasks.forEach(task => {
@@ -12,6 +12,7 @@ async function fetchTasks() {
         li.textContent = task.name; // Acessando o nome da tarefa
         li.className = 'task';
         taskList.appendChild(li);
+        
     });
 }
 
@@ -21,7 +22,7 @@ taskForm.addEventListener('submit', async (e) => {
     const newTask = { name: taskInput.value }; // Captura o valor do input
 
     try {
-        const response = await fetch('http://localhost:3000/users', {
+        const response = await fetch('http://localhost:3000/tasks', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -5,13 +5,13 @@ const app = express();
 app.use(cors()); // Permite todas as origens (não recomendado para produção)
 app.use(express.json());
 
-const users = [];
+const tasks = [];
 
-app.get('/users', (req, res) => {
-    res.json(users);
+app.get('/tasks', (req, res) => {
+    res.json(tasks);
 });
 
-app.post('/users', (req, res) => {
+app.post('/tasks', (req, res) => {
     console.log(req.body); // Loga o corpo da requisição
     const newUser = req.body;
 
@@ -20,7 +20,7 @@ app.post('/users', (req, res) => {
         return res.status(400).send('Nome do usuário é obrigatório.');
     }
 
-    users.push(newUser);
+    tasks.push(newUser);
     res.status(201).json(newUser); // Retorna o novo usuário adicionado
 });
 

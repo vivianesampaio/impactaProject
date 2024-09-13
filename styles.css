@@ -1,14 +1,23 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background: linear-gradient(-225deg, #473B7B 0%, #3584A7 51%, #30D2BE 100%);  
+    height: 100vh;  
     margin: 0;
     padding: 20px;
+    overflow: hidden;
 }
 h1 {
     text-align: center;
-    color: #333;
+    color: #ffffff;
 }
 #taskList {
+    display: flex;
+    flex-direction:column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    margin-top: 20px;
     list-style-type: none;
     padding: 0;
 }
@@ -18,6 +27,7 @@ h1 {
     padding: 10px;
     border-radius: 4px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 50%;
 }
 form {
     display: flex;
