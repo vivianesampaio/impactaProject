@@ -27,11 +27,11 @@ taskForm.addEventListener('submit', async (e) => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(newTask), // Transforma o objeto em JSON
+            body: JSON.stringify(newTask),
         });
 
         if (!response.ok) {
-            const errorMessage = await response.text(); // Pega a mensagem de erro do servidor
+            const errorMessage = await response.text(); 
             throw new Error(`Erro ao adicionar a tarefa: ${errorMessage}`);
         }
 

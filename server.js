@@ -17,21 +17,21 @@ app.get('/tasks', (req, res) => {
 
 app.post('/tasks', async (req, res) => {
     console.log(req.body); // Loga o corpo da requisição
-    const newUser = req.body;
+    const newTask = req.body;
     
     await prisma.task.create( { 
         data: {
             taskName: req.body.name,
         }
-    } ) // Cria um novo usuário no banco de dados
+    } ) // Cria um novo registro no banco de dados
 
     // Verifica se o nome está presente
-    if (!newUser || !newUser.name) {
+    if (!newTask || !newTask.name) {
         return res.status(400).send('Nome do usuário é obrigatório.');
     }
 
-    tasks.push(newUser);
-    res.status(201).json(newUser); // Retorna o novo usuário adicionado
+    tasks.push(newTask);
+    res.status(201).json(newTask); // Retorna o novo registro adicionado
 });
 
 app.listen(3000, () => {
