@@ -11,8 +11,14 @@ app.use(express.json());
 
 const tasks = [];
 
-app.get('/tasks', (req, res) => {
-    res.json(tasks);
+app.get('/tasks', async (req, res) => {
+    try {
+        const tasks = await prisma.task.findMany(); // Busca todas as tarefas no banco de dados
+        res.json(tasks); // Envia as tarefas como resposta JSON
+    } catch (error) {
+        console.error('Erro ao buscar tarefas:', error);
+        res.status(500).json({ error: 'Erro ao buscar tarefas' });
+    }
 });
 
 app.post('/tasks', async (req, res) => {

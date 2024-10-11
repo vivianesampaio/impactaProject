@@ -2,19 +2,31 @@ const taskList = document.getElementById('taskList');
 const taskForm = document.getElementById('taskForm');
 const taskInput = document.getElementById('taskInput');
 
-// Função para buscar e exibir a lista de tarefas
+// Função para buscar e exibir a lista de tarefas do banco de dados
 async function fetchTasks() {
-    const response = await fetch('http://localhost:3000/tasks'); // Altere para incluir a porta
-    const tasks = await response.json();
-    taskList.innerHTML = '';
-    tasks.forEach(task => {
-        const li = document.createElement('li');
-        li.textContent = task.name; // Acessando o nome da tarefa
-        li.className = 'task';
-        taskList.appendChild(li);
+    try {
+        const response = await fetch('http://localhost:3000/tasks'); // Altere para incluir a porta correta do backend
+        if (!response.ok) {
+            throw new Error(`Erro: ${response.statusText}`);
+        }
         
-    });
+        const tasks = await response.json();
+        const taskList = document.getElementById('taskList'); // Supondo que o ID do UL/OL seja 'taskList'
+        taskList.innerHTML = ''; // Limpar a lista antes de renderizar as novas tarefas
+        
+        tasks.forEach(task => {
+            const li = document.createElement('li');
+            li.textContent = task.taskName; // Acessando o nome da tarefa
+            li.className = 'task'; // Classe para estilização se necessário
+            taskList.appendChild(li);
+        });
+
+    } catch (error) {
+        console.error('Erro ao buscar as tarefas:', error);
+        alert('Não foi possível carregar a lista de tarefas.');
+    }
 }
+
 
 // Evento para enviar o formulário e adicionar uma nova tarefa
 taskForm.addEventListener('submit', async (e) => {
