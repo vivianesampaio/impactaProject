@@ -40,6 +40,18 @@ app.post('/tasks', async (req, res) => {
     res.status(201).json(newTask); // Retorna o novo registro adicionado
 });
 
+app.put('/tasks/:id', async (req, res) => {
+    await prisma.task.update({
+        where: {
+            id: req.params.id,
+        },
+        data: {
+            taskName: req.body.taskName, 
+        }
+    })
+    res.status(200).json(req.body);
+})
+
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });

@@ -5,19 +5,27 @@ const taskInput = document.getElementById('taskInput');
 // Função para buscar e exibir a lista de tarefas do banco de dados
 async function fetchTasks() {
     try {
-        const response = await fetch('http://localhost:3000/tasks'); // Altere para incluir a porta correta do backend
+        const response = await fetch('http://localhost:3000/tasks');
         if (!response.ok) {
             throw new Error(`Erro: ${response.statusText}`);
         }
         
         const tasks = await response.json();
-        const taskList = document.getElementById('taskList'); // Supondo que o ID do UL/OL seja 'taskList'
         taskList.innerHTML = ''; // Limpar a lista antes de renderizar as novas tarefas
         
         tasks.forEach(task => {
             const li = document.createElement('li');
             li.textContent = task.taskName; // Acessando o nome da tarefa
-            li.className = 'task'; // Classe para estilização se necessário
+            li.className = 'task';
+
+            // Botão de edição
+            const editButton = document.createElement('button');
+            editButton.textContent = 'Editar';
+            editButton.addEventListener('click', () => {
+                editTask(task.id, task.taskName); // Chama a função de edição passando o ID e o nome da tarefa
+            });
+
+            li.appendChild(editButton); // Adiciona o botão ao elemento da tarefa
             taskList.appendChild(li);
         });
 
@@ -26,6 +34,35 @@ async function fetchTasks() {
         alert('Não foi possível carregar a lista de tarefas.');
     }
 }
+
+async function editTask(id, currentName) {
+    const newName = prompt("Edite o nome da tarefa:", currentName); // Exibe o nome atual como valor padrão
+
+    if (!newName) {
+        alert("O nome da tarefa não pode estar vazio!");
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ taskName: newName }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro ao editar a tarefa: ${response.statusText}`);
+        }
+
+        fetchTasks(); // Atualiza a lista para mostrar a tarefa editada
+    } catch (error) {
+        console.error('Erro ao editar a tarefa:', error);
+        alert('Não foi possível editar a tarefa.');
+    }
+}
+
 
 
 // Evento para enviar o formulário e adicionar uma nova tarefa
