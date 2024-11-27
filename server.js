@@ -52,6 +52,15 @@ app.put('/tasks/:id', async (req, res) => {
     res.status(200).json(req.body);
 })
 
+app.delete('/tasks/:id', async (req, res) => {
+    await prisma.task.delete({
+        where: {
+            id: req.params.id,
+        }
+    })
+    res.status(200).json({ message: 'Tarefa excluída com sucesso!' });
+})
+
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 });

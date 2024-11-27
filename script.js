@@ -5,7 +5,7 @@ const taskInput = document.getElementById('taskInput');
 // Função para buscar e exibir a lista de tarefas do banco de dados
 async function fetchTasks() {
     try {
-        const response = await fetch('http://localhost:3000/tasks');
+        const response = await fetch('http://localhost:3000/tasks');        
         if (!response.ok) {
             throw new Error(`Erro: ${response.statusText}`);
         }
@@ -27,6 +27,15 @@ async function fetchTasks() {
 
             li.appendChild(editButton); // Adiciona o botão ao elemento da tarefa
             taskList.appendChild(li);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Excluir';
+            deleteButton.addEventListener('click', () => {
+                deleteTask(task.id);
+            });
+            
+            li.appendChild(deleteButton); // Adiciona o botão primeiro
+            taskList.appendChild(li); // Adiciona o li completo ao taskList
         });
 
     } catch (error) {
@@ -60,6 +69,24 @@ async function editTask(id, currentName) {
     } catch (error) {
         console.error('Erro ao editar a tarefa:', error);
         alert('Não foi possível editar a tarefa.');
+    }
+}
+
+async function deleteTask(id) {
+    try {
+        console.log('Tentando excluir a tarefa com ID:', id); // Log para depuração
+
+        const response = await fetch(`http://localhost:3000/tasks/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            console.log('Tarefa excluída com sucesso');
+            fetchTasks();
+        } 
+    } catch (error) {
+        console.error('Erro ao excluir a tarefa:', error);
+        alert('Não foi possível excluir a tarefa.');
     }
 }
 
